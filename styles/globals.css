@@ -8,6 +8,9 @@ body {
     Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
+/* #footer {
+} */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
