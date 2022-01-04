@@ -6,7 +6,6 @@ import Navbar from "./Navbar";
 
 export default function Layout({ title, description, keywords, children }) {
   const router = useRouter();
-  console.log(router);
 
   return (
     <>
