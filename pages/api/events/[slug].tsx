@@ -1,7 +1,10 @@
+import type { NextApiRequest, NextApiResponse } from "next";
 const { events } = require("./data.json");
 
-export default function (req, res) {
-  const evt = events.filter((item) => item.slug === req.query.slug);
+export default function (req: NextApiRequest, res: NextApiResponse) {
+  const evt = events.filter(
+    (item: { slug: string | string[] }) => item.slug === req.query.slug
+  );
 
   if (req.method === "GET") {
     // Process a GET rst

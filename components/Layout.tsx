@@ -4,7 +4,19 @@ import Banner from "./Banner";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
 
-export default function Layout({ title, description, keywords, children }) {
+type Props = {
+  title: string;
+  description: string;
+  keywords: string;
+  children: any;
+};
+
+export default function Layout({
+  title,
+  description,
+  keywords,
+  children,
+}: Props) {
   const router = useRouter();
 
   return (
@@ -22,7 +34,7 @@ export default function Layout({ title, description, keywords, children }) {
 
       <div className="2xl:container min-h-screen">{children}</div>
 
-      <Footer id="footer" />
+      <Footer />
     </>
   );
 }
