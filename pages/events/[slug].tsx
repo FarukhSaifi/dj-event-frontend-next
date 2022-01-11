@@ -1,12 +1,14 @@
 import Layout from "@/components/Layout";
-import EventData from "@/components/types";
+import EventData from "@/types/index";
 import { API_URL } from "@/config/index";
 import Image from "next/image";
 import Link from "next/link";
+import qs from "qs";
+import axios from "axios";
 
 export default function MyEvent({ evt: { attributes } }: EventData) {
   return (
-    <Layout>
+    <Layout title={`${attributes.name} - Dj Event | Find Dj Near by You`}>
       <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl py-5">
         My Event
       </h1>
@@ -82,7 +84,7 @@ export default function MyEvent({ evt: { attributes } }: EventData) {
 export async function getStaticPaths() {
   const res = await fetch(`${API_URL}/api/events`);
   const events = await res.json();
-  console.log("events path   :>> ", events);
+
   const paths = events.data.map((evt: EventData) => ({
     params: {
       slug: evt.attributes.slug,
@@ -96,8 +98,18 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params: { slug } }: any) {
-  const res = await fetch(`${API_URL}/api/events?slug=${slug}`);
+  const query = qs.stringify({
+    filters: {
+      slug: {
+        $eq: slug,
+      },
+    },
+  });
+
+  const res = await fetch(`${API_URL}/api/events?${query}`);
   const evt = await res.json();
+
+  console.log("evt :>> ", evt.data[0]);
 
   return {
     props: { evt: evt.data[0] },

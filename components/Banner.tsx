@@ -1,7 +1,8 @@
 import axios from "axios";
 import Link from "next/link";
 import { API_URL } from "../config";
-import EventData from "./types";
+import EventData from "../types";
+import SearchBar from "./SearchBar";
 let faker = require("faker");
 
 export default function Banner() {
@@ -60,6 +61,7 @@ export default function Banner() {
           </div>
         </div>
       </div>
+      <SearchBar />
     </div>
   );
 }

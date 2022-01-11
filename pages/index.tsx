@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { API_URL } from "../config";
 import Layout from "@/components/Layout";
-import EventData from "@/components/types";
+import EventData from "@/types/index";
 import EventCard from "@/components/EventCard";
 
 const Home = ({ events }: any) => {
