@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { API_URL } from "../config";
 import Layout from "@/components/Layout";
-import EventData from "@/types/index";
+import { EventData } from "@/types/index";
 import EventCard from "@/components/EventCard";
+import QueryString from "qs";
 
 const Home = ({ events }: any) => {
   return (
     <Layout>
-      {events.length === 0 && <h3>No Event Available</h3>}
+      {events.length === 0 && <h3 className="mx-auto">No Event Available</h3>}
       <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
         <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
           {events.map((event: EventData) => (
@@ -31,7 +32,20 @@ const Home = ({ events }: any) => {
 export default Home;
 
 export async function getStaticProps() {
-  const res = await fetch(`${API_URL}/api/events?_sort=date:ASC&_limit=4`);
+  const query = QueryString.stringify(
+    {
+      sort: ["createdAt:desc", "updatedAt:asc"],
+      pagination: {
+        start: 0,
+        limit: 4,
+      },
+    },
+    {
+      encodeValuesOnly: true,
+    }
+  );
+
+  const res = await fetch(`${API_URL}/api/events?${query}`);
   const allEvents = await res.json();
 
   return { props: { events: allEvents.data }, revalidate: 1 };

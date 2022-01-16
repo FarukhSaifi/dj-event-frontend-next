@@ -4,7 +4,7 @@ import Link from "next/link";
 import { API_URL } from "@/config/index";
 import Layout from "@/components/Layout";
 import EventCard from "@/components/EventCard";
-import EventData from "@/types/index";
+import { EventData } from "@/types/index";
 
 export default function SearchPage({ events }: any) {
   const router = useRouter();

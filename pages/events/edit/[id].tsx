@@ -3,22 +3,21 @@ import { API_URL, DATE_FORMAT } from "@/config/index";
 import { useState } from "react";
 import axios from "axios";
 import { slugify } from "@/types/utils";
-import { IEvent } from "@/types/index";
+import { EventData, IEvent } from "@/types/index";
 import moment from "moment";
 
-const initialState = {
-  name: "",
-  slug: "",
-  venue: "",
-  address: "",
-  performers: "",
-  date: "",
-  description: "",
-  // image: "",
-};
-
-export default function addEventPage() {
-  const [values, setValues] = useState<IEvent>(initialState);
+export default function editEventPage({ evt: { id, attributes } }: EventData) {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [values, setValues] = useState<IEvent>({
+    name: attributes.name,
+    slug: attributes.slug,
+    venue: attributes.venue,
+    address: attributes.address,
+    performers: attributes.performers,
+    date: attributes.date,
+    description: attributes.description,
+    image: attributes,
+  });
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -30,14 +29,10 @@ export default function addEventPage() {
       prompt("Please Enter Valid Form");
     }
 
-    const data = {
-      ...values,
-      slug: slugify(values.name),
-      Date: moment(values.date).format(DATE_FORMAT),
-    };
+    const data = { ...values, slug: slugify(values.name) };
     console.log(data);
 
-    const res = axios
+    axios
       .post(`${API_URL}/api/events`, {
         data,
       })
@@ -47,6 +42,7 @@ export default function addEventPage() {
 
   const handleChange = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target;
+    console.log(value);
     setValues({ ...values, [name]: value });
   };
 
@@ -137,7 +133,7 @@ export default function addEventPage() {
                       </label>
                       <input
                         onChange={handleChange}
-                        value={values.date}
+                        value={moment(values.date).format(DATE_FORMAT)}
                         required
                         type="datetime-local"
                         name="date"
@@ -204,4 +200,16 @@ export default function addEventPage() {
       </div>
     </Layout>
   );
+}
+
+export async function getServerSideProps({ params: { id } }: any) {
+  console.log("Event ID", id);
+
+  const res = await axios.get(`${API_URL}/api/events/${id}`);
+  console.log(res.data.data);
+  const evt = await res.data.data;
+
+  return {
+    props: { evt },
+  };
 }

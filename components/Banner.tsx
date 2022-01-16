@@ -1,11 +1,14 @@
 import axios from "axios";
 import Link from "next/link";
 import { API_URL } from "../config";
-import EventData from "../types";
+import { EventData } from "@/types/index";
 import SearchBar from "./SearchBar";
+import Modal from "@/components/Modal";
+import { useState } from "react";
 let faker = require("faker");
 
 export default function Banner() {
+  const [show, setShow] = useState(false);
   // Create A New random Event
   const handleClick = async () => {
     const dummyData = {
@@ -21,10 +24,14 @@ export default function Banner() {
       image: faker.image.image(),
     };
 
-    const res = await axios.post(`${API_URL}/api/events`, {
-      data: dummyData,
-    });
-    console.log("res :>> ", res);
+    try {
+      const res = await axios.post(`${API_URL}/api/events`, {
+        data: dummyData,
+      });
+      console.log("res :>> ", res);
+    } catch (error) {
+      console.log(error);
+    }
   };
   // Create bulk Event
   const bulkFaker = () => {
@@ -59,9 +66,20 @@ export default function Banner() {
               Bulk Faker
             </button>
           </div>
+          <button
+            onClick={() => setShow(true)}
+            className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50"
+          >
+            Open Modal
+          </button>
         </div>
       </div>
+
       <SearchBar />
+
+      <Modal show={show} onClose={() => setShow(false)} title={"Farukh"}>
+        <h3>This is the Modal </h3>
+      </Modal>
     </div>
   );
 }

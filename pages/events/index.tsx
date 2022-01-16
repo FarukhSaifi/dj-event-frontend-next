@@ -1,8 +1,7 @@
 import EventCard from "@/components/EventCard";
 import Layout from "@/components/Layout";
 import { API_URL } from "@/config/index";
-import EventData from "@/types/index";
-import { Key } from "react";
+import { EventData } from "@/types/index";
 
 type Props = {
   events: any;
