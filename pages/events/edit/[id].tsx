@@ -2,12 +2,14 @@ import Layout from "@/components/Layout";
 import { API_URL, DATE_FORMAT } from "@/config/index";
 import { useState } from "react";
 import axios from "axios";
-import { slugify } from "@/types/utils";
+import { slugify } from "utils";
 import { EventData, IEvent } from "@/types/index";
 import moment from "moment";
 
 export default function editEventPage({ evt: { id, attributes } }: EventData) {
   // eslint-disable-next-line react-hooks/rules-of-hooks
+
+  console.log({ evt });
   const [values, setValues] = useState<IEvent>({
     name: attributes.name,
     slug: attributes.slug,

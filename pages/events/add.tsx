@@ -2,17 +2,17 @@ import Layout from "@/components/Layout";
 import { API_URL, DATE_FORMAT } from "@/config/index";
 import { useState } from "react";
 import axios from "axios";
-import { slugify } from "@/types/utils";
+import { slugify } from "utils";
 import { IEvent } from "@/types/index";
 import moment from "moment";
 
 const initialState = {
   name: "",
-  slug: "",
+  // slug: "",
   venue: "",
   address: "",
   performers: "",
-  date: "",
+  date: new Date().toISOString(),
   description: "",
   // image: "",
 };
@@ -20,20 +20,20 @@ const initialState = {
 export default function addEventPage() {
   const [values, setValues] = useState<IEvent>(initialState);
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
     // Validation
     const hasEmptyField = Object.values(values).some((value) => value === "");
 
     if (!hasEmptyField) {
-      prompt("Please Enter Valid Form");
+      alert("Please Enter Valid Form");
     }
 
     const data = {
       ...values,
-      slug: slugify(values.name),
-      Date: moment(values.date).format(DATE_FORMAT),
+      // slug: slugify(values.name),
+      // Date: moment(values.date).format(DATE_FORMAT),
     };
     console.log(data);
 
@@ -139,7 +139,7 @@ export default function addEventPage() {
                         onChange={handleChange}
                         value={values.date}
                         required
-                        type="datetime-local"
+                        type="date"
                         name="date"
                         id="date"
                         autoComplete="address-level2"

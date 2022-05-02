@@ -9,6 +9,8 @@ import { EventData } from "@/types/index";
 export default function SearchPage({ events }: any) {
   const router = useRouter();
 
+  console.log(events);
+
   return (
     <Layout title="Search Results">
       <div className=" justify-between">
@@ -17,15 +19,15 @@ export default function SearchPage({ events }: any) {
         </h1>
         <Link href="/events">Go Back</Link>
       </div>
-      {events.data.length === 0 && (
+      {events.length === 0 && (
         <h3 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
           No events to show
         </h3>
       )}
       <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
         <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-          {events.data.map((evt: EventData) => (
-            <EventCard key={evt.id} event={evt.attributes} />
+          {events.map((evt: EventData) => (
+            <EventCard key={evt.id} event={evt} />
           ))}
         </div>
       </div>
@@ -36,22 +38,16 @@ export default function SearchPage({ events }: any) {
 export async function getServerSideProps({ query: { term } }: any) {
   const query = qs.stringify(
     {
-      filters: {
-        $or: [
+      _where: {
+        _or: [
           {
-            name: {
-              $contains: term,
-            },
+            name_contains: term,
           },
           {
-            venue: {
-              $contains: term,
-            },
+            venue_contains: term,
           },
           {
-            description: {
-              $contains: term,
-            },
+            description_contains: term,
           },
         ],
       },
@@ -61,7 +57,7 @@ export async function getServerSideProps({ query: { term } }: any) {
     }
   );
 
-  const res = await fetch(`${API_URL}/api/events?${query}`);
+  const res = await fetch(`${API_URL}/events?${query}`);
   const events = await res.json();
   console.log("events res:>> ", events);
 

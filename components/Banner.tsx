@@ -13,19 +13,18 @@ export default function Banner() {
   const handleClick = async () => {
     const dummyData = {
       name: faker.name.firstName(),
-      slug: faker.lorem.slug(),
+      // slug: faker.lorem.slug(),
       venue: faker.address.streetAddress(),
       address: `${faker.address.streetAddress()} ${faker.address.city()}, ${faker.address.country()}, ${faker.address.stateAbbr()}(${faker.address.stateAbbr()}), ${faker.address.zipCodeByState()}`,
 
       performers: faker.company.catchPhrase(),
-      date: faker.date.future(),
-      time: faker.time.recent(),
+      date: new Date().toISOString(),
       description: faker.lorem.sentence(),
       image: faker.image.image(),
     };
 
     try {
-      const res = await axios.post(`${API_URL}/api/events`, {
+      const res = await axios.post(`${API_URL}/events`, {
         data: dummyData,
       });
       console.log("res :>> ", res);
