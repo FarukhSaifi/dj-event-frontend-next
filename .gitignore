@@ -37,4 +37,7 @@ yarn-error.log*
 *.tsbuildinfo
 
 #TailwindCSS
-/styles/tailwind.css
+/styles/tailwind.csspackage-lock.json
+yarn.lock
+pnpm-lock.yaml
+*.lock
