@@ -5,6 +5,7 @@ import { DATE_FORMAT } from "@/config/index";
 import Image from "next/image";
 import Link from "next/link";
 import moment from "moment";
+import { getEventImageSrc } from "utils/eventImage";
 
 export default function MyEvent({ evt }: EventPageProps) {
   return (
@@ -47,9 +48,7 @@ export default function MyEvent({ evt }: EventPageProps) {
       {evt.image && (
         <div className="min-w-full min-h-250">
           <Image
-            src={
-              evt.image?.formats?.thumbnail?.url ?? "/images/showcase.jpg"
-            }
+            src={getEventImageSrc(evt.image)}
             alt={evt.slug}
             className="w-full h-auto"
             width={800}
@@ -92,7 +91,7 @@ export async function getStaticPaths() {
 
   return {
     paths,
-    fallback: true,
+    fallback: false,
   };
 }
 

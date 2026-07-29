@@ -27,13 +27,15 @@ export interface EventItem {
   date: string;
   time?: string;
   description: string;
-  image?: {
-    formats?: {
-      thumbnail?: {
-        url: string;
+  image?:
+    | string
+    | {
+        formats?: {
+          thumbnail?: {
+            url: string;
+          };
+        };
       };
-    };
-  };
 }
 
 export interface EventPageProps {
