@@ -1,12 +1,13 @@
 import Layout from "@/components/Layout";
-import { EventData } from "@/types/index";
-import { API_URL, DATE_FORMAT } from "@/config/index";
+import { EventItem, EventPageProps } from "@/types/index";
+import { fetchEventBySlug, fetchEvents } from "utils/events";
+import { DATE_FORMAT } from "@/config/index";
 import Image from "next/image";
 import Link from "next/link";
-import qs from "qs";
 import moment from "moment";
+import { getEventImageSrc } from "utils/eventImage";
 
-export default function MyEvent({ evt }: EventData) {
+export default function MyEvent({ evt }: EventPageProps) {
   return (
     <Layout title={`${evt.name} - Dj Event | Find Dj Near by You`}>
       <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl py-5">
@@ -47,15 +48,11 @@ export default function MyEvent({ evt }: EventData) {
       {evt.image && (
         <div className="min-w-full min-h-250">
           <Image
-            src={
-              evt.image
-                ? evt.image.formats.thumbnail.url
-                : "/images/showcase.jpg"
-            }
+            src={getEventImageSrc(evt.image)}
             alt={evt.slug}
+            className="w-full h-auto"
             width={800}
             height={250}
-            layout="responsive"
             priority
           />
         </div>
@@ -84,11 +81,9 @@ export default function MyEvent({ evt }: EventData) {
 }
 
 export async function getStaticPaths() {
-  const res = await fetch(`${API_URL}/events`);
-  console.log("86", res);
-  const events = await res.json();
+  const events = await fetchEvents();
 
-  const paths = events.map((evt: EventData) => ({
+  const paths = events.map((evt: EventItem) => ({
     params: {
       slug: evt.slug,
     },
@@ -96,26 +91,21 @@ export async function getStaticPaths() {
 
   return {
     paths,
-    fallback: true,
+    fallback: false,
   };
 }
 
-export async function getStaticProps({ params: { slug } }: any) {
-  const query = qs.stringify({
-    filters: {
-      slug: {
-        $eq: slug,
-      },
-    },
-  });
+export async function getStaticProps({ params: { slug } }: { params: { slug: string } }) {
+  const evt = await fetchEventBySlug(slug);
 
-  const res = await fetch(`${API_URL}/events?slug=${slug}`);
-  const evt = await res.json();
-
-  console.log("evt :>> ", evt);
+  if (!evt) {
+    return {
+      notFound: true,
+    };
+  }
 
   return {
-    props: { evt: evt[0] },
+    props: { evt },
     revalidate: 1,
   };
 }

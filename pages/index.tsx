@@ -3,7 +3,7 @@ import { API_URL } from "../config";
 import Layout from "@/components/Layout";
 import { EventData } from "@/types/index";
 import EventCard from "@/components/EventCard";
-import QueryString from "qs";
+import { fetchEvents } from "utils/events";
 
 const Home = ({ events }: any): JSX.Element => (
   <Layout>
@@ -30,21 +30,7 @@ const Home = ({ events }: any): JSX.Element => (
 export default Home;
 
 export async function getStaticProps() {
-  const query = QueryString.stringify(
-    {
-      sort: ["createdAt:desc", "updatedAt:asc"],
-      pagination: {
-        start: 0,
-        limit: 4,
-      },
-    },
-    {
-      encodeValuesOnly: true,
-    }
-  );
+  const events = await fetchEvents(`${API_URL}/events`);
 
-  const res = await fetch(`${API_URL}/events`);
-  const allEvents = await res.json();
-  console.log(allEvents);
-  return { props: { events: allEvents }, revalidate: 1 };
+  return { props: { events: events.slice(0, 4) }, revalidate: 1 };
 }

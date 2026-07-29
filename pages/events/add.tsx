@@ -17,7 +17,7 @@ const initialState = {
   // image: "",
 };
 
-export default function addEventPage() {
+export default function AddEventPage() {
   const [values, setValues] = useState<IEvent>(initialState);
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {

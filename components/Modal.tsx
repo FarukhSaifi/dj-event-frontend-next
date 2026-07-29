@@ -90,11 +90,11 @@ export default function Modal({ show, onClose, title, children }: ModalProps) {
   ) : null;
 
   if (isBrowser) {
-    return ReactDOM.createPortal(
-      modalContent,
-      document.getElementById("modal-root")
-    );
-  } else {
-    return null;
+    const modalRoot = document.getElementById("modal-root");
+    if (modalRoot) {
+      return ReactDOM.createPortal(modalContent, modalRoot);
+    }
   }
+
+  return null;
 }

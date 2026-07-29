@@ -1,26 +1,24 @@
 import axios from "axios";
 import Link from "next/link";
 import { API_URL } from "../config";
-import { EventData } from "@/types/index";
 import SearchBar from "./SearchBar";
 import Modal from "@/components/Modal";
 import { useState } from "react";
-let faker = require("faker");
+import { faker } from "@faker-js/faker";
 
 export default function Banner() {
   const [show, setShow] = useState(false);
   // Create A New random Event
   const handleClick = async () => {
     const dummyData = {
-      name: faker.name.firstName(),
-      // slug: faker.lorem.slug(),
-      venue: faker.address.streetAddress(),
-      address: `${faker.address.streetAddress()} ${faker.address.city()}, ${faker.address.country()}, ${faker.address.stateAbbr()}(${faker.address.stateAbbr()}), ${faker.address.zipCodeByState()}`,
+      name: faker.person.firstName(),
+      venue: faker.location.streetAddress(),
+      address: `${faker.location.streetAddress()} ${faker.location.city()}, ${faker.location.country()}, ${faker.location.state({ abbreviated: true })}(${faker.location.state({ abbreviated: true })}), ${faker.location.zipCode()}`,
 
       performers: faker.company.catchPhrase(),
       date: new Date().toISOString(),
       description: faker.lorem.sentence(),
-      image: faker.image.image(),
+      image: faker.image.url(),
     };
 
     try {

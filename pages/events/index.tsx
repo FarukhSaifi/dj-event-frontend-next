@@ -1,6 +1,7 @@
 import EventCard from "@/components/EventCard";
 import Layout from "@/components/Layout";
 import { API_URL } from "@/config/index";
+import { fetchEvents } from "utils/events";
 import { EventData } from "@/types/index";
 
 type Props = {
@@ -23,8 +24,7 @@ export default function EventPage({ events }: Props) {
 }
 
 export async function getStaticProps() {
-  const res = await fetch(`${API_URL}/events?_sort=date:ASC`);
-  const allEvents = await res.json();
+  const events = await fetchEvents(`${API_URL}/events?_sort=date:ASC`);
 
-  return { props: { events: allEvents }, revalidate: 1 };
+  return { props: { events }, revalidate: 1 };
 }
