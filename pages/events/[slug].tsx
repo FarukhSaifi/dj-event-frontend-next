@@ -1,9 +1,9 @@
 import Layout from "@/components/Layout";
 import { EventItem, EventPageProps } from "@/types/index";
-import { API_URL, DATE_FORMAT } from "@/config/index";
+import { fetchEventBySlug, fetchEvents } from "utils/events";
+import { DATE_FORMAT } from "@/config/index";
 import Image from "next/image";
 import Link from "next/link";
-import qs from "qs";
 import moment from "moment";
 
 export default function MyEvent({ evt }: EventPageProps) {
@@ -82,9 +82,7 @@ export default function MyEvent({ evt }: EventPageProps) {
 }
 
 export async function getStaticPaths() {
-  const res = await fetch(`${API_URL}/events`);
-  console.log("86", res);
-  const events = await res.json();
+  const events = await fetchEvents();
 
   const paths = events.map((evt: EventItem) => ({
     params: {
@@ -98,22 +96,17 @@ export async function getStaticPaths() {
   };
 }
 
-export async function getStaticProps({ params: { slug } }: any) {
-  const query = qs.stringify({
-    filters: {
-      slug: {
-        $eq: slug,
-      },
-    },
-  });
+export async function getStaticProps({ params: { slug } }: { params: { slug: string } }) {
+  const evt = await fetchEventBySlug(slug);
 
-  const res = await fetch(`${API_URL}/events?slug=${slug}`);
-  const evt = await res.json();
-
-  console.log("evt :>> ", evt);
+  if (!evt) {
+    return {
+      notFound: true,
+    };
+  }
 
   return {
-    props: { evt: evt[0] },
+    props: { evt },
     revalidate: 1,
   };
 }

@@ -18,7 +18,7 @@ export interface EventData {
 }
 
 export interface EventItem {
-  id: number;
+  id: number | string;
   name: string;
   slug: string;
   venue: string;
