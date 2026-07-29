@@ -6,9 +6,7 @@ import { slugify } from "utils";
 import { EventData, IEvent } from "@/types/index";
 import moment from "moment";
 
-export default function editEventPage({ evt: { id, attributes } }: EventData) {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-
+export default function EditEventPage({ evt: { id, attributes } }: EventData) {
   console.log({ evt });
   const [values, setValues] = useState<IEvent>({
     name: attributes.name,
