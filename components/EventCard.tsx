@@ -13,7 +13,6 @@ export default function EventCard({ event }: any) {
             className="w-full h-full object-center object-cover group-hover:opacity-75"
             width={300}
             height={200}
-            layout="responsive"
             priority
           />
         </div>

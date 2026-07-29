@@ -1,12 +1,12 @@
 import Layout from "@/components/Layout";
-import { EventData } from "@/types/index";
+import { EventItem, EventPageProps } from "@/types/index";
 import { API_URL, DATE_FORMAT } from "@/config/index";
 import Image from "next/image";
 import Link from "next/link";
 import qs from "qs";
 import moment from "moment";
 
-export default function MyEvent({ evt }: EventData) {
+export default function MyEvent({ evt }: EventPageProps) {
   return (
     <Layout title={`${evt.name} - Dj Event | Find Dj Near by You`}>
       <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl py-5">
@@ -48,14 +48,12 @@ export default function MyEvent({ evt }: EventData) {
         <div className="min-w-full min-h-250">
           <Image
             src={
-              evt.image
-                ? evt.image.formats.thumbnail.url
-                : "/images/showcase.jpg"
+              evt.image?.formats?.thumbnail?.url ?? "/images/showcase.jpg"
             }
             alt={evt.slug}
+            className="w-full h-auto"
             width={800}
             height={250}
-            layout="responsive"
             priority
           />
         </div>
@@ -88,7 +86,7 @@ export async function getStaticPaths() {
   console.log("86", res);
   const events = await res.json();
 
-  const paths = events.map((evt: EventData) => ({
+  const paths = events.map((evt: EventItem) => ({
     params: {
       slug: evt.slug,
     },

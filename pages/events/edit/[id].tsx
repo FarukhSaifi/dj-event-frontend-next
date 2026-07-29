@@ -3,10 +3,11 @@ import { API_URL, DATE_FORMAT } from "@/config/index";
 import { useState } from "react";
 import axios from "axios";
 import { slugify } from "utils";
-import { EventData, IEvent } from "@/types/index";
+import { EditEventPageProps, IEvent } from "@/types/index";
 import moment from "moment";
 
-export default function EditEventPage({ evt: { id, attributes } }: EventData) {
+export default function EditEventPage({ evt }: EditEventPageProps) {
+  const { id, attributes } = evt;
   console.log({ evt });
   const [values, setValues] = useState<IEvent>({
     name: attributes.name,
