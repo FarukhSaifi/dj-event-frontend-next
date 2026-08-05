@@ -1,10 +1,9 @@
 import Layout from "@/components/Layout";
-import { API_URL, DATE_FORMAT } from "@/config/index";
-import { useState } from "react";
+import { API_URL } from "@/config/index";
+import { ChangeEvent, useState } from "react";
 import axios from "axios";
-import { slugify } from "utils";
+import { parseEventDate, slugify } from "utils";
 import { EditEventPageProps, IEvent } from "@/types/index";
-import moment from "moment";
 
 export default function EditEventPage({ evt }: EditEventPageProps) {
   const { id, attributes } = evt;
@@ -41,7 +40,7 @@ export default function EditEventPage({ evt }: EditEventPageProps) {
       .catch((err) => console.log(err));
   };
 
-  const handleChange = (e: { target: { name: any; value: any } }) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     console.log(value);
     setValues({ ...values, [name]: value });
@@ -134,7 +133,9 @@ export default function EditEventPage({ evt }: EditEventPageProps) {
                       </label>
                       <input
                         onChange={handleChange}
-                        value={moment(values.date).format(DATE_FORMAT)}
+                        value={parseEventDate(values.date).format(
+                          "YYYY-MM-DDTHH:mm"
+                        )}
                         required
                         type="datetime-local"
                         name="date"
@@ -203,7 +204,12 @@ export default function EditEventPage({ evt }: EditEventPageProps) {
   );
 }
 
-export async function getServerSideProps({ params: { id } }: any) {
+export async function getServerSideProps({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const { id } = params;
   console.log("Event ID", id);
 
   const res = await axios.get(`${API_URL}/api/events/${id}`);

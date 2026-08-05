@@ -1,9 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
+import { EventItem } from "@/types/index";
 import { DateFormatter } from "utils";
 import { getEventImageSrc } from "utils/eventImage";
 
-export default function EventCard({ event }: any) {
+export default function EventCard({ event }: { event: EventItem }) {
   return (
     <Link key={event.id} href={`/events/${event.slug}`}>
       <a className="group drop-shadow-md">

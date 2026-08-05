@@ -1,16 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ReactDOM from "react-dom";
 import { ModalProps } from "../types";
 
-export default function Modal({ show, onClose, title, children }: ModalProps) {
-  const [isBrowser, setIsBrowser] = useState(false);
-
-  useEffect(() => setIsBrowser(true), []);
-
-  const handleClose = (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    onClose();
-  };
+export default function Modal({ show, onClose, title }: ModalProps) {
+  const [isBrowser] = useState(() => typeof window !== "undefined");
 
   const modalContent = show ? (
     <div

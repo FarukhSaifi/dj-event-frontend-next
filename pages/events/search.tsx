@@ -4,9 +4,13 @@ import Link from "next/link";
 import { API_URL } from "@/config/index";
 import Layout from "@/components/Layout";
 import EventCard from "@/components/EventCard";
-import { EventData } from "@/types/index";
+import { EventItem } from "@/types/index";
 
-export default function SearchPage({ events }: any) {
+type SearchPageProps = {
+  events: EventItem[];
+};
+
+export default function SearchPage({ events }: SearchPageProps) {
   const router = useRouter();
 
   console.log(events);
@@ -26,7 +30,7 @@ export default function SearchPage({ events }: any) {
       )}
       <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
         <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-          {events.map((evt: EventData) => (
+          {events.map((evt) => (
             <EventCard key={evt.id} event={evt} />
           ))}
         </div>
@@ -35,7 +39,11 @@ export default function SearchPage({ events }: any) {
   );
 }
 
-export async function getServerSideProps({ query: { term } }: any) {
+export async function getServerSideProps({
+  query: { term },
+}: {
+  query: { term?: string };
+}) {
   const query = qs.stringify(
     {
       _where: {

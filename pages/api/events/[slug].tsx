@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-const { events } = require("./data.json");
+import { events } from "./data.json";
 
-export default function (req: NextApiRequest, res: NextApiResponse) {
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const evt = events.filter(
     (item: { slug: string | string[] }) => item.slug === req.query.slug
   );

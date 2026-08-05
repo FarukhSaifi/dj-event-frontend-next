@@ -1,14 +1,15 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { ReactNode } from "react";
 import Banner from "./Banner";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
 
 type Props = {
-  title: string;
-  description: string;
-  keywords: string;
-  children: any;
+  title?: string;
+  description?: string;
+  keywords?: string;
+  children: ReactNode;
 };
 
 export default function Layout({
