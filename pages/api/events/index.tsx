@@ -1,8 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-const { events } = require("./data.json");
+import { events } from "./data.json";
 
-export default function (req: NextApiRequest, res: NextApiResponse) {
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
     // Process a GET request
     res.status(200).json(events);

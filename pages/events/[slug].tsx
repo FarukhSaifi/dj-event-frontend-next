@@ -1,10 +1,9 @@
 import Layout from "@/components/Layout";
 import { EventItem, EventPageProps } from "@/types/index";
 import { fetchEventBySlug, fetchEvents } from "utils/events";
-import { DATE_FORMAT } from "@/config/index";
 import Image from "next/image";
 import Link from "next/link";
-import moment from "moment";
+import { DateFormatter } from "utils";
 import { getEventImageSrc } from "utils/eventImage";
 
 export default function MyEvent({ evt }: EventPageProps) {
@@ -40,7 +39,7 @@ export default function MyEvent({ evt }: EventPageProps) {
         </div>
       </div>
 
-      <span className="pb-3">{moment(evt.date).format(DATE_FORMAT)}</span>
+      <span className="pb-3">{DateFormatter(evt.date)}</span>
       <h3 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-4xl py-4">
         {evt.name}
       </h3>

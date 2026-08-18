@@ -61,7 +61,7 @@ export interface IEvent {
 
 export interface ModalProps {
   show: boolean;
-  onClose: Function;
+  onClose: () => void;
   title: string;
   children: ReactNode;
 }

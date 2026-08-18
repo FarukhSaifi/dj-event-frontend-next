@@ -1,10 +1,8 @@
 import Layout from "@/components/Layout";
-import { API_URL, DATE_FORMAT } from "@/config/index";
-import { useState } from "react";
+import { API_URL } from "@/config/index";
+import { ChangeEvent, useState } from "react";
 import axios from "axios";
-import { slugify } from "utils";
 import { IEvent } from "@/types/index";
-import moment from "moment";
 
 const initialState = {
   name: "",
@@ -45,7 +43,7 @@ export default function AddEventPage() {
       .catch((err) => console.log(err));
   };
 
-  const handleChange = (e: { target: { name: any; value: any } }) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setValues({ ...values, [name]: value });
   };
